@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Order Online — The Echo Restaurant</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#FBF6EC; --panel:#F3EBDC; --ink:#1A1712; --muted:#6B6255;
+ --navy:#16233F; --red:#C1272D; --orange:#DE7A22; --line:#E2D7C1;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)
+}
+:root[data-theme="dark"]{--bg:#15130F;--panel:#1E1B14;--ink:#F1EBDD;--muted:#B3A992;--navy:#9DB4E8;--line:#3A3427}
+html{scroll-padding-top:80px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.06rem/1.6 "Public Sans",system-ui,sans-serif;overflow-x:hidden}
+h1,h2,h3,h4{font-family:Fraunces,Georgia,serif;color:var(--navy);margin:0;line-height:1.08}
+a{color:var(--red)}
+img{max-width:100%;display:block}
+:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 clamp(1.2rem,4vw,3rem)}
+
+header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+.navrow{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.8rem 0;max-width:1080px;margin:0 auto;padding-left:clamp(1.2rem,4vw,3rem);padding-right:clamp(1.2rem,4vw,3rem)}
+.navrow img{height:44px;width:auto}
+.navlinks{display:flex;gap:1.4rem;flex-wrap:wrap}
+.navlinks a{color:var(--ink);text-decoration:none;font-weight:600;font-size:.95rem}
+.navlinks a:hover{color:var(--red)}
+.navlinks a.active{color:var(--red)}
+.callbtn{background:var(--red);color:#fff;font-weight:700;text-decoration:none;padding:.6rem 1.1rem;border-radius:7px;white-space:nowrap}
+@media (max-width:760px){
+.navrow{flex-wrap:wrap;row-gap:.7rem;justify-content:center;text-align:center}
+.navrow img{order:1}
+.callbtn{order:2;padding:.55rem .9rem;font-size:.85rem}
+.navlinks{order:3;width:100%;flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;gap:1.3rem;padding-bottom:.15rem;-webkit-overflow-scrolling:touch}
+.navlinks::-webkit-scrollbar{display:none}
+.navlinks a{white-space:nowrap;font-size:.88rem;flex:0 0 auto}
+}
+
+.pagehead{padding:2.6rem 0 1.6rem;text-align:center}
+.pagehead h1{font-size:clamp(2rem,5vw,2.9rem);font-weight:600}
+.pagehead p{color:var(--muted);max-width:52ch;margin:.7rem auto 0}
+.pagehead a.backlink{display:inline-block;margin-top:.9rem;font-weight:600;font-size:.9rem}
+
+.tabs{display:flex;gap:.6rem;justify-content:center;margin:1.4rem 0 0;flex-wrap:wrap}
+.tabbtn{font:700 .95rem "Public Sans",sans-serif;background:none;border:2px solid var(--navy);color:var(--navy);padding:.6rem 1.4rem;border-radius:999px;cursor:pointer}
+.tabbtn.active{background:var(--navy);color:#fff}
+
+.orderlayout{display:grid;grid-template-columns:1.5fr 1fr;gap:2.2rem;align-items:start;margin-top:2rem}
+@media (max-width:900px){.orderlayout{grid-template-columns:1fr}}
+
+.mealpanel{display:none}
+.mealpanel.show{display:block}
+.catblock{margin-bottom:2.2rem}
+.catblock h3{font-size:1.35rem;font-weight:600;border-bottom:2px solid var(--line);padding-bottom:.4rem;margin-bottom:.3rem}
+.catnote{color:var(--muted);font-size:.88rem;margin:0 0 .9rem}
+.menuline{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;padding:.85rem 0;border-bottom:1px solid var(--line)}
+.menuline:last-child{border-bottom:none}
+.ml-body{flex:1;min-width:0}
+.ml-body h4{font-size:1.02rem;font-weight:600;color:var(--ink)}
+.ml-body p{margin:.2rem 0 0;color:var(--muted);font-size:.88rem}
+.ml-side{display:flex;flex-direction:column;align-items:flex-end;gap:.4rem;flex:0 0 auto}
+.ml-price{font-weight:700;color:var(--navy);white-space:nowrap}
+.oi-add{font:700 .82rem "Public Sans",sans-serif;background:var(--red);color:#fff;border:none;padding:.4rem .9rem;border-radius:6px;cursor:pointer;white-space:nowrap}
+.oi-add:active{opacity:.8}
+.notice{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.9rem 1.1rem;font-size:.88rem;color:var(--muted);margin-bottom:1.6rem}
+.notice b{color:var(--ink)}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.4rem;position:sticky;top:90px}
+.card h3{font-size:1.2rem;margin-bottom:.9rem}
+.cartline{display:flex;justify-content:space-between;font-size:.92rem;padding:.4rem 0;border-bottom:1px solid var(--line)}
+.cartline button{background:none;border:none;color:var(--red);font-size:1.1rem;cursor:pointer;margin-left:.6rem}
+.carttotal{display:flex;justify-content:space-between;font-weight:700;padding:.8rem 0;border-top:2px solid var(--line);margin-top:.4rem}
+.card label{display:block;font-size:.85rem;font-weight:600;margin:.9rem 0 .25rem}
+.card input,.card textarea,.card select{width:100%;font:inherit;padding:.65rem;border:2px solid var(--line);border-radius:7px;background:var(--bg);color:var(--ink)}
+.submitbtn{width:100%;margin-top:1.1rem;background:var(--red);color:#fff;font-weight:700;border:none;padding:.85rem;border-radius:8px;cursor:pointer;font-size:1rem}
+.note{font-size:.85rem;color:var(--muted);margin-top:.6rem}
+
+footer{padding:2.2rem 0;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);text-align:center}
+footer a{color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <div class="navrow">
+    <img src="logo.webp" alt="The Echo Restaurant logo">
+    <nav class="navlinks">
+      <a href="order.html" class="active">Order online</a>
+      <a href="index.html#story">Our story</a>
+      <a href="index.html#menu">Menu</a>
+      <a href="index.html#visit">Visit</a>
+      <a href="index.html#inquire">Reserve &amp; catering</a>
+    </nav>
+    <a class="callbtn" href="tel:(999)999-9999">Call (999) 999-9999</a>
+  </div>
+</header>
+
+<section class="wrap pagehead">
+  <h1>Order online for pickup</h1>
+  <p>Our full breakfast and lunch menu — add what you'd like, pick a pickup time, and we'll have it ready at the counter.</p>
+  <a class="backlink" href="index.html">&#8592; Back to the main site</a>
+  <div class="tabs">
+    <button class="tabbtn active" id="tabBreakfast">Breakfast</button>
+    <button class="tabbtn" id="tabLunch">Lunch</button>
+  </div>
+</section>
+
+<section class="wrap" style="padding-top:0">
+  <div class="orderlayout">
+    <div>
+      <div class="notice"><b>This week's features (week of 9/28):</b> Mon — Sloppy Joe Sandwich, Turkey Wild Rice Soup, Cup Custard · Tue — Chicken Rotini Soup, Apple Pie · Wed — Italian Sausage Minestrone Soup, Cherry Cheese Pie · Thu — Chicken Artichoke Soup, Chocolate Cream Pie · Fri — Battered Haddock, Cream of Tomato Soup, Seafood Chowder, Pumpkin Pie. Ask your server which day's feature is available.</div>
+
+      <div id="mealBreakfast" class="mealpanel show"></div>
+      <div id="mealLunch" class="mealpanel"></div>
+    </div>
+
+    <div class="card" id="cartCard">
+      <h3>Your pickup order</h3>
+      <div id="cartLines"><p class="note" id="cartEmpty">Nothing added yet.</p></div>
+      <div class="carttotal" id="cartTotal" hidden><span>Total</span><span id="cartTotalAmt">$0.00</span></div>
+      <label for="opn">Name</label><input id="opn">
+      <label for="opp">Phone</label><input id="opp" type="tel">
+      <label for="opt">Pickup time</label>
+      <select id="opt">
+        <option>As soon as possible</option>
+        <option>In 30 minutes</option>
+        <option>In 1 hour</option>
+        <option>Choose a time when I arrive</option>
+      </select>
+      <label for="opnote">Notes (optional)</label><textarea id="opnote" rows="2" placeholder="Allergies, extra sauce, etc."></textarea>
+      <button class="submitbtn" id="ob">Place pickup order</button>
+      <p class="note" id="om"></p>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  Website preview by Preferred Web Solutions for The Echo Restaurant. Online ordering above is a working demo for review — it'll connect to a real payment system once approved. Menu items and prices are pulled from the menu on file; update anytime.
+</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+
+// ---- Menu data (from the uploaded Fall menu — breakfast & lunch) ----
+const MENU={
+ Breakfast:[
+  {cat:"Combos", note:"Specialty toast add $.50", items:[
+   {n:"Business Man's Breakfast", d:"2 eggs, bacon, home fries, toast", p:12},
+   {n:"Marje's Metabolism Booster", d:"2 egg whites scrambled w/ 1 omelet filling, fruit, cup of oatmeal", p:12},
+   {n:"Corned Beef Hash", d:"2 eggs on top of fried hash, toast", p:13},
+   {n:"Steph's Sampler", d:"2 eggs, bacon, sausage, 2 hotcakes, side", p:15},
+   {n:"Breakfast Sandwich", d:"Egg, cheese, meat, toast, side", p:12},
+   {n:"Bonnie's Bounty", d:"2 eggs, bacon, sausage, home fries, biscuit & gravy", p:13},
+   {n:"Glier's German Greats", d:"2 eggs any style, goetta, potato cakes, baked apples, choice of toast", p:13},
+   {n:"Breakfast Burrito", d:"Flour tortilla, scrambled eggs, meat or Santa Fe mix, cheese, side", p:13},
+   {n:"Eggs Benedict", d:"Choice of Traditional (canadian bacon), Florentine (spinach), or Echo (goetta) — hollandaise & side", p:13},
+   {n:"Country Boy", d:"Biscuit with sausage, sausage gravy & side", p:13}
+  ]},
+  {cat:"Seasonal Specials", items:[
+   {n:"Crabby Benedict", d:"Crab cakes, poached eggs, hollandaise, english muffin & side", p:13},
+   {n:"Full O' Bologna", d:"Breakfast sandwich, thick cut fried bologna, fried egg, American cheese, old school bun, side", p:13},
+   {n:"Pumpkin Pie Pancakes", d:"Pumpkin & spice, pecans, syrup, whipped cream", p:12}
+  ]},
+  {cat:"Hangover Helpers", items:[
+   {n:"Belgian Bird Sandwich", d:"Chicken tenders, fried egg, cheddar on a waffle, powdered sugar, syrup, side", p:14},
+   {n:"Flying Pig Sandwich", d:"Ham, bacon, swiss on french toast, powdered sugar, syrup, side", p:14},
+   {n:"Hot Mess", d:"Layers of home fries, scrambled eggs, bacon, sausage, sausage gravy, cheddar w/ toast", p:15},
+   {n:"Lumberjack", d:"2 scrambled eggs filled w/ goetta, banana peppers & pepper jack, side of potato cakes & biscuit & gravy", p:15}
+  ]},
+  {cat:"Omelets", note:"Served with toast & side (specialty toast +$.50). Subtract $1 if skipping side or toast.", items:[
+   {n:"Create Your Own", d:"Pick 3: bacon, goetta, ham, sausage, peppers, broccoli, mushrooms, onions, spinach, tomatoes, zucchini, cheeses — extra items $1", p:13},
+   {n:"Loaded Potato", d:"Bacon, cheddar, home fries, chives, sour cream", p:13},
+   {n:"Oktoberfest", d:"Goetta, home fries, onions, swiss, sour cream", p:13},
+   {n:"Aztec", d:"Sausage, green peppers, mushrooms, onions, pepper jack, sour cream & salsa", p:13},
+   {n:"Victory Garden", d:"Spinach, mushrooms, zucchini, tomatoes, onions, cheese", p:13}
+  ]},
+  {cat:"Griddle Goodies & Extras", items:[
+   {n:"3 Hotcakes", d:"Add bananas, blueberries, chocolate chips, or pecans +$2", p:9},
+   {n:"Waffle", d:"", p:8},
+   {n:"French Toast", d:"", p:8},
+   {n:"Biscuits & Gravy", d:"3 biscuits, bowl of sausage gravy", p:8},
+   {n:"Oatmeal or Homemade Granola", d:"Add almonds, bananas, cranberries, pecans, or raisins +$1", p:5},
+   {n:"Kris's Healthy Start", d:"Yogurt, homemade granola, fruit", p:8},
+   {n:"Specialty Toast", d:"Cinnamon sugar, raisin roll, croissant, gluten-free, plain bagel, raisin toast, or Breadsmith's rosemary multigrain", p:3},
+   {n:"Seasonal Fresh Fruit Bowl", d:"", p:5},
+   {n:"Bacon / Sausage Patties or Links / Goetta / Ham / Turkey Sausage / Canadian Bacon / Corned Beef Hash", d:"", p:5}
+  ]},
+  {cat:"Sides", items:[
+   {n:"Baked Apples", d:"", p:3},{n:"Grits", d:"", p:3},{n:"Home Fries", d:"", p:3},
+   {n:"Potato Cakes", d:"", p:3},{n:"Seasonal Fresh Fruit", d:"", p:3},{n:"Yogurt", d:"", p:3}
+  ]},
+  {cat:"Kids", items:[
+   {n:"Pick 2", d:"1 egg with toast, 1 plain/chocolate/blueberry hotcake, 1 slice french toast, 1/2 waffle, or 2 pieces bacon/sausage (side item) — upgrade to goetta +$1", p:7}
+  ]},
+  {cat:"Monday–Friday Breakfast Specials", items:[
+   {n:"Beginner's Breakfast", d:"1 egg, 2 slices bacon or sausage, toast", p:6.5},
+   {n:"Carolyn's Combo", d:"1 egg, half order home fries, toast", p:5.5},
+   {n:"Griddle Breakfast", d:"1 hotcake or 1/2 order french toast or 1/2 waffle & bacon or sausage", p:6.5},
+   {n:"Simple Breakfast", d:"1 egg, 2 hotcakes", p:7.5}
+  ]},
+  {cat:"Cocktails", noOrder:true, note:"Available in-house only — ask your server. 21+, valid ID required at the table.", items:[
+   {n:"Apple Cider Mimosa", d:"Pitcher $29", p:12},
+   {n:"Irish Coffee", d:"Coffee, Jameson, Bailey's, whipped cream", p:11},
+   {n:"Salty Bloody Mary", d:"", p:12},
+   {n:"Champagne (Hibiscus or Mimosa)", d:"Pitcher $27", p:10},
+   {n:"Vodka (Bloody Mary, Screwdriver, Sea Breeze, or Greyhound)", d:"", p:10},
+   {n:"Beer or Wine", d:"Ask your server", p:null}
+  ]}
+ ],
+ Lunch:[
+  {cat:"Sandwiches", note:"Served with chips if requested — make it a platter with fries & cole slaw +$4", items:[
+   {n:"Club", d:"Turkey, bacon, lettuce, tomato, mayo, white toast", p:11},
+   {n:"BLT", d:"", p:8},
+   {n:"Grilled Reuben", d:"Corned beef or roasted turkey, swiss, sauerkraut, homemade thousand island", p:12},
+   {n:"Grilled Cheese", d:"Add bacon, ham, or turkey +$3", p:6.5},
+   {n:"Sante Fe Wrap", d:"Chicken, cheese, sante fe mix (black beans, corn, onions, tomatoes, peppers), side of tortilla chips & salsa ranch", p:12},
+   {n:"Egg Salad", d:"", p:7},
+   {n:"Chicken or Tuna Salad", d:"", p:9},
+   {n:"Tuna Melt", d:"", p:11},
+   {n:"Create Your Own", d:"Baked ham or roasted turkey", p:8},
+   {n:"Cheeseburger", d:"Lettuce, tartar sauce, cheese — double burger $15", p:11},
+   {n:"Fried Cod", d:"White bun, tartar sauce", p:12},
+   {n:"Battered Haddock", d:"Large plank of Yuengling battered haddock, fried, white bun, homemade tartar sauce", p:13},
+   {n:"Funky Chicken", d:"Grilled chicken, mushrooms, banana peppers, pepper jack", p:12}
+  ]},
+  {cat:"Salads", note:"Dressings: homemade french, ranch, thousand island, balsamic vinaigrette, bleu cheese, honey mustard, feta vinaigrette, or oil & vinegar. Served w/ biscuit or crackers.", items:[
+   {n:"Harvest Turkey Chop Salad", d:"NEW! Roasted turkey, dried cranberries, pecans, feta, apples, apple vinaigrette", p:14},
+   {n:"Echo Club", d:"Roasted turkey or grilled chicken, bacon, onions, tomatoes, egg, cheddar, homemade croutons", p:14},
+   {n:"Chef", d:"American, swiss, ham, turkey, egg, tomatoes, bacon, homemade croutons", p:15},
+   {n:"Spinach", d:"Bacon, mozzarella, onions, tomatoes, egg, homemade croutons", p:10},
+   {n:"Chicken Caesar", d:"Grilled chicken, onions, tomatoes, parmesan, homemade croutons, caesar dressing", p:14},
+   {n:"Taco", d:"Chili, tortilla chips, cheddar, onions, tomatoes, sour cream, salsa, ranch — with chicken or sante fe mix $16", p:14},
+   {n:"Echo Scoops", d:"3 scoops cottage cheese/chicken/tuna/egg salad in any combo, tomatoes & pineapple", p:14},
+   {n:"Chicken Feta Chop", d:"Grilled chicken, bacon, tomatoes, carrots, onions, feta, homemade croutons, feta vinaigrette", p:14}
+  ]},
+  {cat:"Entrees", items:[
+   {n:"Chicken Tenders & French Fries", d:"Side of honey mustard", p:12},
+   {n:"Fried Cod", d:"2 sides, roll, tartar sauce", p:15},
+   {n:"Battered Haddock", d:"2 sides, roll, tartar sauce", p:15}
+  ]},
+  {cat:"Soups", note:"Vegetable, chili, or daily soup (ask your server)", items:[
+   {n:"Cup", d:"", p:4.5},{n:"Bowl", d:"", p:5.5},{n:"Quart", d:"", p:12}
+  ]},
+  {cat:"Kids", items:[
+   {n:"Grilled Cheese, Hamburger, Chicken Tenders, or Peanut Butter & Jelly", d:"Served with a side", p:7}
+  ]},
+  {cat:"Sides", items:[
+   {n:"Applesauce, Fruit Salad, Green Beans, Steamed Broccoli, Spinach, Tossed Salad, or Zucchini", d:"", p:3},
+   {n:"French Fries, Home Fries, Onion Rings, or Potato Cakes", d:"", p:3},
+   {n:"Cottage Cheese", d:"", p:3},
+   {n:"Homemade Coleslaw", d:"Quart of slaw $12", p:3}
+  ]},
+  {cat:"Drinks", items:[
+   {n:"Coffee or Hot Tea", d:"", p:3},
+   {n:"Herbal Tea", d:"", p:3.5},
+   {n:"Hot Chocolate", d:"", p:4.5},
+   {n:"Soft Drinks, Tea, or Lemonade", d:"", p:3},
+   {n:"Milk", d:"Small $2.50 / Large $3.50", p:2.5},
+   {n:"Juice", d:"Apple, cranberry, grapefruit, orange, or tomato — small $3 / large $4", p:3},
+   {n:"Shakes or Malts", d:"", p:5.5}
+  ]},
+  {cat:"Monday–Friday Lunch Specials", items:[
+   {n:"Half Sandwich & Tossed Salad or Cup of Soup", d:"Chicken, egg, or tuna salad, roasted turkey, baked ham, or BLT", p:8},
+   {n:"Club Wrap with Chips", d:"", p:11},
+   {n:"Funky Chicken & Fries", d:"", p:13},
+   {n:"Cheeseburger & Fries", d:"", p:12},
+   {n:"Echo Grill & Fries", d:"Baked ham, swiss, lettuce, tomato, tartar sauce, grilled bun", p:12},
+   {n:"Grilled Cheese & Cup of Soup", d:"Add bacon, ham, or turkey +$3", p:9},
+   {n:"Tuna Melt & Fries", d:"", p:12},
+   {n:"Fried Cod & Fries", d:"", p:13},
+   {n:"Reuben & Fries", d:"Corned beef or roasted turkey, swiss, sauerkraut, homemade thousand island", p:13}
+  ]}
+ ]
+};
+
+function renderMeal(mealKey,containerId){
+ const el=$(containerId);
+ el.innerHTML=MENU[mealKey].map(block=>`
+  <div class="catblock">
+   <h3>${block.cat}</h3>
+   ${block.note?`<p class="catnote">${block.note}</p>`:""}
+   ${block.items.map(it=>`
+    <div class="menuline">
+     <div class="ml-body"><h4>${it.n}</h4>${it.d?`<p>${it.d}</p>`:""}</div>
+     <div class="ml-side">
+      ${it.p!=null?`<div class="ml-price">$${it.p.toFixed(2)}</div>`:""}
+      ${block.noOrder||it.p==null?"":`<button class="oi-add" data-item="${it.n.replace(/"/g,'&quot;')}" data-price="${it.p}">Add</button>`}
+     </div>
+    </div>`).join("")}
+  </div>`).join("");
+}
+renderMeal("Breakfast","mealBreakfast");
+renderMeal("Lunch","mealLunch");
+
+$("tabBreakfast").onclick=()=>{
+ $("tabBreakfast").classList.add("active");$("tabLunch").classList.remove("active");
+ $("mealBreakfast").classList.add("show");$("mealLunch").classList.remove("show");
+};
+$("tabLunch").onclick=()=>{
+ $("tabLunch").classList.add("active");$("tabBreakfast").classList.remove("active");
+ $("mealLunch").classList.add("show");$("mealBreakfast").classList.remove("show");
+};
+
+// ---- Cart (same mechanic as the old in-page order section) ----
+const cart=[];
+function renderCart(){
+ const lines=$("cartLines");
+ if(!cart.length){lines.innerHTML='<p class="note" id="cartEmpty">Nothing added yet.</p>';$("cartTotal").hidden=true;return}
+ lines.innerHTML=cart.map((it,i)=>`<div class="cartline"><span>${it.name}</span><span>$${it.price.toFixed(2)}<button data-i="${i}" aria-label="Remove ${it.name}">&times;</button></span></div>`).join("");
+ const total=cart.reduce((s,it)=>s+it.price,0);
+ $("cartTotal").hidden=false;
+ $("cartTotalAmt").textContent="$"+total.toFixed(2);
+ lines.querySelectorAll("button[data-i]").forEach(b=>b.onclick=()=>{cart.splice(+b.dataset.i,1);renderCart()});
+}
+document.addEventListener("click",e=>{
+ const b=e.target.closest(".oi-add");
+ if(!b)return;
+ cart.push({name:b.dataset.item,price:parseFloat(b.dataset.price)});
+ renderCart();
+ b.textContent="Added";setTimeout(()=>{b.textContent="Add"},900);
+});
+$("ob").onclick=()=>{
+ if(!cart.length){$("om").textContent="Add at least one item first.";return}
+ if(!$("opn").value.trim()||!$("opp").value.trim()){$("om").textContent="Please add a name and phone number.";return}
+ $("om").textContent="Thanks — this is a preview, so nothing was sent or charged yet. Online ordering connects to a real payment system once approved.";
+};
+</script>
+</body>
+</html>
