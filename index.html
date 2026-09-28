@@ -97,6 +97,20 @@ label{display:block;font-weight:600;font-size:.9rem;margin-top:.8rem}
 input,textarea{width:100%;font:inherit;padding:.65rem;margin-top:.3rem;border:2px solid var(--line);border-radius:7px;background:var(--panel);color:var(--ink)}
 .submitbtn{margin-top:1.1rem;background:var(--navy);color:#fff;border:0;border-radius:8px;padding:.8rem 1.4rem;font-weight:700;cursor:pointer}
 .note{margin-top:.7rem;font-weight:600;font-size:.9rem;color:var(--red)}
+.orderlayout{display:grid;grid-template-columns:1.5fr 1fr;gap:2rem;align-items:start}
+@media (max-width:820px){.orderlayout{grid-template-columns:1fr}}
+.orderitems{display:flex;flex-direction:column;gap:1rem}
+.orderitem{display:flex;gap:1rem;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:1rem}
+.orderitem img{width:76px;height:76px;object-fit:cover;border-radius:9px;flex-shrink:0}
+.orderitem .oi-body{flex-grow:1;min-width:0}
+.orderitem h4{margin:0 0 .2rem;font-family:Fraunces,Georgia,serif;color:var(--navy);font-size:1.05rem}
+.orderitem p{margin:0;color:var(--muted);font-size:.88rem}
+.oi-price{font-weight:700;color:var(--navy);margin-top:.3rem;font-size:.92rem}
+.oi-add{background:var(--navy);color:#fff;border:0;border-radius:7px;padding:.55rem .95rem;font-weight:700;cursor:pointer;flex-shrink:0}
+.cartline{display:flex;justify-content:space-between;gap:.6rem;padding:.5rem 0;border-bottom:1px solid var(--line);font-size:.92rem}
+.cartline button{background:none;border:0;color:var(--red);font-weight:700;cursor:pointer;padding:0 0 0 .5rem}
+.carttotal{display:flex;justify-content:space-between;font-weight:700;padding-top:.8rem;margin-top:.4rem;border-top:2px solid var(--navy)}
+.menunote{color:var(--muted);font-size:.85rem;margin-top:.9rem}
 
 footer{padding:2.2rem 0;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line)}
 footer a{color:var(--muted)}
@@ -107,6 +121,7 @@ footer a{color:var(--muted)}
   <div class="navrow">
     <img src="logo.webp" alt="The Echo Restaurant logo">
     <nav class="navlinks">
+      <a href="#order">Order online</a>
       <a href="#story">Our story</a>
       <a href="#menu">Menu</a>
       <a href="#visit">Visit</a>
@@ -122,8 +137,8 @@ footer a{color:var(--muted)}
     <h1>Hearty, home-cooked food with a seat that's always been yours.</h1>
     <p>A Hyde Park neighborhood staple for four generations — homemade pies, weekly features worth talking about, and a staff that still remembers your order.</p>
     <div class="ctas">
-      <a class="btn primary" href="tel:(999)999-9999">Order by phone</a>
-      <a class="btn outline" href="#inquire">Reserve a table</a>
+      <a class="btn primary" href="#order">Order online for pickup</a>
+      <a class="btn outline" href="tel:(999)999-9999">Order by phone</a>
     </div>
   </div>
   <div class="hero-photos">
@@ -176,6 +191,53 @@ Recognize someone? Chances are we'll recognize you, too — our staff sticks aro
       <li><b>2005</b><span>A liquor license arrives for third-shifters and brunch.</span></li>
       <li><b>Today</b><span>Open seven days, with seasonal menus and catering.</span></li>
     </ul>
+  </div>
+</section>
+
+<section class="wrap panel" id="order" style="border-radius:20px">
+  <h2>Order online for pickup</h2>
+  <p class="section-lede">Build your order below, pick a pickup time, and we'll have it ready at the counter.</p>
+  <div class="orderlayout">
+    <div class="orderitems">
+      <div class="orderitem">
+        <img src="flying-pig-sandwich.webp" alt="The Flying Pig sandwich">
+        <div class="oi-body"><h4>The Flying Pig</h4><p>Our regulars' favorite, piled high.</p><div class="oi-price">$12.50</div></div>
+        <button class="oi-add" data-item="The Flying Pig" data-price="12.50">Add</button>
+      </div>
+      <div class="orderitem">
+        <img src="hot-mess.webp" alt="The Hot Mess plate">
+        <div class="oi-body"><h4>The Hot Mess</h4><p>A full plate built for the days you need it.</p><div class="oi-price">$11.00</div></div>
+        <button class="oi-add" data-item="The Hot Mess" data-price="11.00">Add</button>
+      </div>
+      <div class="orderitem">
+        <img src="guests-2.webp" alt="Weekly feature plate">
+        <div class="oi-body"><h4>This week's feature</h4><p>Ask about today's seasonal special.</p><div class="oi-price">$10.25</div></div>
+        <button class="oi-add" data-item="Weekly feature" data-price="10.25">Add</button>
+      </div>
+      <div class="orderitem">
+        <img src="guests-1.webp" alt="Slice of homemade pie">
+        <div class="oi-body"><h4>Louise's homemade pie</h4><p>Made from the original recipe, by the slice.</p><div class="oi-price">$5.50</div></div>
+        <button class="oi-add" data-item="Homemade pie (slice)" data-price="5.50">Add</button>
+      </div>
+      <p class="menunote">Sample items shown for preview — swap in your full menu and real prices anytime. For anything not listed here, add a note at checkout or call us.</p>
+    </div>
+    <div class="card" id="cartCard">
+      <h3>Your pickup order</h3>
+      <div id="cartLines"><p class="note" style="color:var(--muted)" id="cartEmpty">Nothing added yet.</p></div>
+      <div class="carttotal" id="cartTotal" hidden><span>Total</span><span id="cartTotalAmt">$0.00</span></div>
+      <label for="opn">Name</label><input id="opn">
+      <label for="opp">Phone</label><input id="opp" type="tel">
+      <label for="opt">Pickup time</label>
+      <select id="opt" style="width:100%;font:inherit;padding:.65rem;margin-top:.3rem;border:2px solid var(--line);border-radius:7px;background:var(--panel);color:var(--ink)">
+        <option>As soon as possible</option>
+        <option>In 30 minutes</option>
+        <option>In 1 hour</option>
+        <option>Choose a time when I arrive</option>
+      </select>
+      <label for="opnote">Notes (optional)</label><textarea id="opnote" rows="2" placeholder="Allergies, extra sauce, etc."></textarea>
+      <button class="submitbtn" id="ob">Place pickup order</button>
+      <p class="note" id="om"></p>
+    </div>
   </div>
 </section>
 
@@ -248,7 +310,7 @@ Recognize someone? Chances are we'll recognize you, too — our staff sticks aro
 </section>
 
 <footer class="wrap">
-  Website preview by Preferred Web Solutions for The Echo Restaurant. Reservation and catering forms above are a working demo for review — they'll connect to email once approved. Menu shown is the fall menu on file; update anytime with a new photo.
+  Website preview by Preferred Web Solutions for The Echo Restaurant. Reservation, catering, and online ordering above are working demos for review — they'll connect to email and real payment processing once approved. Menu shown is the fall menu on file; update anytime with a new photo.
 </footer>
 
 <script>
@@ -260,6 +322,28 @@ $("storyToggle").onclick=()=>{
 };
 $("rb").onclick=()=>{$("rm").textContent=$("rn").value.trim()&&$("rd").value.trim()?"Thanks — this is a preview, so nothing was sent yet.":"Please add a name and a date.";};
 $("cb").onclick=()=>{$("cm").textContent=$("cn").value.trim()&&$("ce").value.trim()?"Thanks — this is a preview, so nothing was sent yet.":"Please add a name and a way to reach you.";};
+
+// Online ordering (pickup) — demo cart, no real payment processing yet
+const cart=[];
+function renderCart(){
+ const lines=$("cartLines");
+ if(!cart.length){lines.innerHTML='<p class="note" style="color:var(--muted)" id="cartEmpty">Nothing added yet.</p>';$("cartTotal").hidden=true;return}
+ lines.innerHTML=cart.map((it,i)=>`<div class="cartline"><span>${it.name}</span><span>$${it.price.toFixed(2)}<button data-i="${i}" aria-label="Remove ${it.name}">&times;</button></span></div>`).join("");
+ const total=cart.reduce((s,it)=>s+it.price,0);
+ $("cartTotal").hidden=false;
+ $("cartTotalAmt").textContent="$"+total.toFixed(2);
+ lines.querySelectorAll("button[data-i]").forEach(b=>b.onclick=()=>{cart.splice(+b.dataset.i,1);renderCart()});
+}
+document.querySelectorAll(".oi-add").forEach(b=>b.onclick=()=>{
+ cart.push({name:b.dataset.item,price:parseFloat(b.dataset.price)});
+ renderCart();
+ b.textContent="Added";setTimeout(()=>{b.textContent="Add"},900);
+});
+$("ob").onclick=()=>{
+ if(!cart.length){$("om").textContent="Add at least one item first.";return}
+ if(!$("opn").value.trim()||!$("opp").value.trim()){$("om").textContent="Please add a name and phone number.";return}
+ $("om").textContent="Thanks — this is a preview, so nothing was sent or charged yet. Online ordering connects to a real payment system once approved.";
+};
 </script>
 </body>
 </html>
